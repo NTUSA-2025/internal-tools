@@ -1,26 +1,39 @@
 import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
+import { beforeEach, vi } from 'vitest';
 
 import App from './app';
 
 describe('App', () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => new Promise(() => undefined)),
+    );
+  });
+
   it('should render successfully', () => {
     const { baseElement } = render(
-      <BrowserRouter>
+      <MemoryRouter
+        future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
+      >
         <App />
-      </BrowserRouter>,
+      </MemoryRouter>,
     );
     expect(baseElement).toBeTruthy();
   });
 
-  it('should have a greeting as the title', () => {
+  it('should render the tool directory', () => {
     const { getAllByText } = render(
-      <BrowserRouter>
+      <MemoryRouter
+        future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
+      >
         <App />
-      </BrowserRouter>,
+      </MemoryRouter>,
     );
-    expect(
-      getAllByText(new RegExp('Welcome portal', 'gi')).length > 0,
-    ).toBeTruthy();
+    expect(getAllByText('QR code').length).toBeGreaterThan(0);
+    expect(getAllByText('Short URL').length).toBeGreaterThan(0);
+    expect(getAllByText('Document generator').length).toBeGreaterThan(0);
+    expect(getAllByText('PDF tools').length).toBeGreaterThan(0);
   });
 });

@@ -1,6 +1,8 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig(() => ({
   root: import.meta.dirname,
@@ -13,7 +15,20 @@ export default defineConfig(() => ({
     port: 4300,
     host: 'localhost',
   },
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@internal-tools/auth': fileURLToPath(
+        new URL('../../libs/auth/src/index.ts', import.meta.url),
+      ),
+      '@internal-tools/tool-registry': fileURLToPath(
+        new URL('../../libs/tool-registry/src/index.ts', import.meta.url),
+      ),
+      '@internal-tools/ui': fileURLToPath(
+        new URL('../../libs/ui/src/index.ts', import.meta.url),
+      ),
+    },
+  },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [],

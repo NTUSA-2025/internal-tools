@@ -16,8 +16,15 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@org/source"],
+    "ignoreDeprecations": "6.0",
+    "customConditions": ["@ntusa/internal-tools"],
     "noUncheckedSideEffectImports": false,
-    "types": ["*"]
+    "types": ["*"],
+    "baseUrl": ".",
+    "paths": {
+      "@internal-tools/auth": ["libs/auth/src/index.ts"],
+      "@internal-tools/tool-registry": ["libs/tool-registry/src/index.ts"],
+      "@internal-tools/ui": ["libs/ui/src/index.ts"]
+    }
   }
 }
