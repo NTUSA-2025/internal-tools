@@ -26,5 +26,19 @@ pnpm nx test portal
 pnpm nx typecheck portal
 ```
 
+## Local Environment
+
+Copy `.dev.vars.example` to `.dev.vars.local` for local-only values. The
+`pages:dev` script reads `.dev.vars.local` first, then falls back to
+`.dev.vars`.
+
+```sh
+pnpm nx build portal
+pnpm pages:dev
+```
+
+When you want a file for Cloudflare secret upload, copy the same shape to
+`.dev.vars`. Both `.dev.vars.local` and `.dev.vars` are gitignored.
+
 Do not run `npm run dev`, Playwright, deploy commands, or production data
 operations unless explicitly requested.

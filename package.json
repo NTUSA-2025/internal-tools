@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nx build portal",
     "lint": "nx lint portal",
+    "pages:dev": "node scripts/with-dev-vars.mjs wrangler pages dev apps/portal/dist",
     "test": "nx test portal",
     "typecheck": "nx typecheck portal",
     "typecheck:functions": "tsc -p functions/tsconfig.json"

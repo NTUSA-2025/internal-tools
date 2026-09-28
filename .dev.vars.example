@@ -1,0 +1,5 @@
+ALLOWED_EMAIL_DOMAIN=ntusa.ntu.edu.tw
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+OAUTH_REDIRECT_URI=http://localhost:8788/api/auth/google/callback
+SESSION_SECRET=
