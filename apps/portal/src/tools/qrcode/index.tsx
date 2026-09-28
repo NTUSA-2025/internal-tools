@@ -7,18 +7,13 @@ import type { AuthState } from '../../app/app';
 import { ToolShell } from '../../app/app';
 import ntusaLogo from '../../assets/ntusa-logo.png';
 
-type ErrorCorrectionLevel = 'L' | 'M' | 'Q' | 'H';
-
 const defaultQrValue = 'https://ntusa.ntu.edu.tw';
+const qrSize = 320;
 
 export function QrcodeTool({ auth }: { auth: AuthState }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [value, setValue] = useState(defaultQrValue);
-  const [darkColor, setDarkColor] = useState('#172126');
-  const [lightColor, setLightColor] = useState('#ffffff');
-  const [size, setSize] = useState(320);
-  const [errorCorrection, setErrorCorrection] =
-    useState<ErrorCorrectionLevel>('M');
+  const [transparentBackground, setTransparentBackground] = useState(false);
   const [includeLogo, setIncludeLogo] = useState(false);
   const [renderError, setRenderError] = useState<string | null>(null);
   const canUseLogo = auth.status === 'authenticated';
@@ -44,16 +39,16 @@ export function QrcodeTool({ auth }: { auth: AuthState }) {
         setRenderError(null);
         await QRCode.toCanvas(canvas, value.trim() || ' ', {
           color: {
-            dark: darkColor,
-            light: lightColor,
+            dark: '#000000',
+            light: transparentBackground ? '#00000000' : '#ffffff',
           },
-          errorCorrectionLevel: includeLogo ? 'H' : errorCorrection,
+          errorCorrectionLevel: includeLogo ? 'H' : 'M',
           margin: 2,
-          width: size,
+          width: qrSize,
         });
 
         if (!cancelled && includeLogo) {
-          await drawCenterLogo(canvas);
+          await drawCenterLogo(canvas, transparentBackground);
         }
       } catch (error) {
         if (!cancelled) {
@@ -71,7 +66,7 @@ export function QrcodeTool({ auth }: { auth: AuthState }) {
     return () => {
       cancelled = true;
     };
-  }, [darkColor, errorCorrection, includeLogo, lightColor, size, value]);
+  }, [includeLogo, transparentBackground, value]);
 
   return (
     <ToolShell
@@ -96,60 +91,26 @@ export function QrcodeTool({ auth }: { auth: AuthState }) {
             />
           </label>
 
-          <div className="field-grid">
-            <label className="field">
-              <span>Foreground</span>
+          <div className="qr-option">
+            <label className="check-row">
               <input
-                type="color"
-                value={darkColor}
-                onChange={(event) => setDarkColor(event.target.value)}
+                type="checkbox"
+                checked={transparentBackground}
+                onChange={(event) =>
+                  setTransparentBackground(event.target.checked)
+                }
               />
-            </label>
-            <label className="field">
-              <span>Background</span>
-              <input
-                type="color"
-                value={lightColor}
-                onChange={(event) => setLightColor(event.target.value)}
-              />
+              <span>
+                <span className="check-title">Transparent background</span>
+                <span className="check-copy">
+                  Export the PNG with transparent pixels behind the black QR
+                  modules.
+                </span>
+              </span>
             </label>
           </div>
 
-          <label className="field">
-            <span>Size</span>
-            <input
-              type="range"
-              min="192"
-              max="512"
-              step="32"
-              value={size}
-              onChange={(event) => setSize(Number(event.target.value))}
-            />
-            <span className="field-note">{size}px</span>
-          </label>
-
-          <label className="field">
-            <span>Error correction</span>
-            <select
-              value={errorCorrection}
-              onChange={(event) =>
-                setErrorCorrection(event.target.value as ErrorCorrectionLevel)
-              }
-              disabled={includeLogo}
-            >
-              <option value="L">Low</option>
-              <option value="M">Medium</option>
-              <option value="Q">Quartile</option>
-              <option value="H">High</option>
-            </select>
-            {includeLogo ? (
-              <span className="field-note">
-                Logo overlay uses high error correction automatically.
-              </span>
-            ) : null}
-          </label>
-
-          <div className="qr-logo-option">
+          <div className="qr-option">
             <label className="check-row">
               <input
                 type="checkbox"
@@ -181,7 +142,7 @@ export function QrcodeTool({ auth }: { auth: AuthState }) {
 
         <section className="qr-preview" aria-label="QR code preview">
           <div className="qr-canvas-frame">
-            <canvas ref={canvasRef} width={size} height={size} />
+            <canvas ref={canvasRef} width={qrSize} height={qrSize} />
           </div>
           {renderError ? (
             <p className="text-sm text-[var(--accent)]">{renderError}</p>
@@ -219,7 +180,10 @@ function useLoginUrl() {
   }, [location.pathname, location.search]);
 }
 
-async function drawCenterLogo(canvas: HTMLCanvasElement) {
+async function drawCenterLogo(
+  canvas: HTMLCanvasElement,
+  transparentBackground: boolean,
+) {
   const context = canvas.getContext('2d');
 
   if (!context) {
@@ -233,9 +197,18 @@ async function drawCenterLogo(canvas: HTMLCanvasElement) {
   const x = Math.round((canvas.width - frameSize) / 2);
   const y = Math.round((canvas.height - frameSize) / 2);
 
-  context.fillStyle = '#ffffff';
-  roundRect(context, x, y, frameSize, frameSize, Math.round(frameSize * 0.18));
-  context.fill();
+  if (!transparentBackground) {
+    context.fillStyle = '#ffffff';
+    roundRect(
+      context,
+      x,
+      y,
+      frameSize,
+      frameSize,
+      Math.round(frameSize * 0.18),
+    );
+    context.fill();
+  }
 
   context.drawImage(logo, x + padding, y + padding, logoSize, logoSize);
 }
