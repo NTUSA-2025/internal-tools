@@ -37,7 +37,7 @@ export function App() {
       <header className="border-b border-[var(--line)] bg-white/90">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4">
           <Link to="/" className="flex min-w-0 items-center gap-3">
-            <span className="grid size-11 place-items-center rounded-lg border border-[var(--line)] bg-white">
+            <span className="grid size-11 place-items-center rounded-lg bg-white">
               <img
                 src={ntusaLogo}
                 alt=""
