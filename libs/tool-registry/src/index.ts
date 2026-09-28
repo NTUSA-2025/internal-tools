@@ -12,9 +12,10 @@ export const tools = [
   {
     id: 'qrcode',
     title: 'QR code',
-    description: 'Frontend-only workspace for QR code generation utilities.',
+    description:
+      'Public QR code generator with optional authenticated logo overlay.',
     path: '/tools/qrcode',
-    auth: 'required',
+    auth: 'public',
   },
   {
     id: 'short-url',

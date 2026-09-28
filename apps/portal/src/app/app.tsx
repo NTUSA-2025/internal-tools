@@ -17,17 +17,10 @@ import { PdfTools } from '../tools/pdf-tools';
 import { QrcodeTool } from '../tools/qrcode';
 import { ShortUrlTool } from '../tools/short-url';
 
-type AuthState =
+export type AuthState =
   | { status: 'loading' }
   | { status: 'authenticated'; email: string }
   | { status: 'anonymous' };
-
-const toolRoutes: Record<ToolDefinition['id'], ReactNode> = {
-  qrcode: <QrcodeTool />,
-  'short-url': <ShortUrlTool />,
-  'document-generator': <DocumentGeneratorTool />,
-  'pdf-tools': <PdfTools />,
-};
 
 const iconByTool: Record<ToolDefinition['id'], ReactNode> = {
   qrcode: <QrCode aria-hidden="true" />,
@@ -96,7 +89,7 @@ export function App() {
               path={tool.path}
               element={
                 <ToolGate auth={auth} tool={tool}>
-                  {toolRoutes[tool.id]}
+                  {renderTool(tool, auth)}
                 </ToolGate>
               }
             />
@@ -108,6 +101,19 @@ export function App() {
 }
 
 export default App;
+
+function renderTool(tool: ToolDefinition, auth: AuthState) {
+  switch (tool.id) {
+    case 'qrcode':
+      return <QrcodeTool auth={auth} />;
+    case 'short-url':
+      return <ShortUrlTool />;
+    case 'document-generator':
+      return <DocumentGeneratorTool />;
+    case 'pdf-tools':
+      return <PdfTools />;
+  }
+}
 
 function ToolHome() {
   return (

@@ -98,3 +98,135 @@ a {
   background: #e0f0e7;
   color: #245a35;
 }
+
+.qr-tool {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 900px) {
+  .qr-tool {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+    align-items: start;
+  }
+}
+
+.qr-controls {
+  display: grid;
+  gap: 18px;
+}
+
+.field,
+.check-row {
+  display: grid;
+  gap: 8px;
+}
+
+.field > span:first-child {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.field textarea,
+.field select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink);
+  font: inherit;
+  padding: 10px 12px;
+}
+
+.field textarea {
+  min-height: 144px;
+  resize: vertical;
+}
+
+.field input[type='color'] {
+  width: 100%;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 4px;
+}
+
+.field input[type='range'] {
+  width: 100%;
+  accent-color: var(--brand);
+}
+
+.field-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.field-note,
+.check-copy {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.qr-logo-option {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 14px;
+}
+
+.check-row {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+}
+
+.check-row input {
+  margin-top: 3px;
+  accent-color: var(--brand);
+}
+
+.check-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 650;
+}
+
+.qr-preview {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+.qr-canvas-frame {
+  display: grid;
+  width: min(100%, 380px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(45deg, #eef2f0 25%, transparent 25%),
+    linear-gradient(-45deg, #eef2f0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #eef2f0 75%),
+    linear-gradient(-45deg, transparent 75%, #eef2f0 75%);
+  background-color: #ffffff;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
+  background-size: 16px 16px;
+  padding: 18px;
+}
+
+.qr-canvas-frame canvas {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  border-radius: 4px;
+}
