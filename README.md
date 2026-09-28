@@ -40,5 +40,17 @@ pnpm pages:dev
 When you want a file for Cloudflare secret upload, copy the same shape to
 `.dev.vars`. Both `.dev.vars.local` and `.dev.vars` are gitignored.
 
+## Cloudflare Pages
+
+Configure production settings in the Cloudflare Pages dashboard:
+
+- Build command: `pnpm nx build portal`
+- Build output directory: `apps/portal/dist`
+- D1 binding: `TOOLS_DB` -> `tools-db`
+
+This public repo intentionally does not commit `wrangler.toml`. For Pages
+projects, Cloudflare treats a committed Wrangler config as the source of truth,
+which can override dashboard bindings.
+
 Do not run `npm run dev`, Playwright, deploy commands, or production data
 operations unless explicitly requested.
