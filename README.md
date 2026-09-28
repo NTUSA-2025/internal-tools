@@ -40,6 +40,12 @@ pnpm pages:dev
 When you want a file for Cloudflare secret upload, copy the same shape to
 `.dev.vars`. Both `.dev.vars.local` and `.dev.vars` are gitignored.
 
+Upload `.dev.vars` to the Cloudflare Pages project with:
+
+```sh
+pnpm pages:secret:bulk
+```
+
 ## Cloudflare Pages
 
 Configure production settings in the Cloudflare Pages dashboard:

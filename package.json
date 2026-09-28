@@ -6,6 +6,7 @@
     "build": "nx build portal",
     "lint": "nx lint portal",
     "pages:dev": "node scripts/with-dev-vars.mjs wrangler pages dev apps/portal/dist",
+    "pages:secret:bulk": "wrangler pages secret bulk .dev.vars --project-name internal-tools",
     "test": "nx test portal",
     "typecheck": "nx typecheck portal",
     "typecheck:functions": "tsc -p functions/tsconfig.json"
